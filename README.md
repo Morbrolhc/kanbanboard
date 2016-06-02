@@ -17,4 +17,4 @@ This is a copy of a project developed at the University of Applied Sciences of N
 5. Open localhost:8080/ in a webbrowser.
 
 ## Notice
-This is repositry's main purpose is to publish the source of this project and won't be used for further developement.
+This repositry's main purpose is to publish the source of this project and won't be used for further developement.
