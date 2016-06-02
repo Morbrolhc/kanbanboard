@@ -1,0 +1,8 @@
+#**
+ * msg
+ *
+ * Shorthand macro to retrieve locale sensitive message from messages.properties
+ *#
+#macro( msg $key )
+    $messages.getMessage($key, null, $locale)
+#end

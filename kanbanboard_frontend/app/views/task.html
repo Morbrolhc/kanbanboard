@@ -1,0 +1,64 @@
+
+<div class="modal-content">
+    <div class="modal-header">
+        <select id="state" class="btn dropdown-toggle btn-default" ng-model="taskCtrl.cardCategory">
+            <option value="TODO">ToDo</option>
+            <option value="DOING">Doing</option>
+            <option value="DONE">Done</option>
+        </select> 
+        <div ng-class="taskCtrl.cardName.length < 2 ? 'has-error' : ''">
+            <h3 id="header"><input type="text" class="noBoarderInput" ng-class="taskCtrl.cardName.length < 2 ? 'errorBoarder' : ''" 
+            ng-model="taskCtrl.cardName" translate translate-attr-placeholder="cardname" autofocus required/></h3>
+        </div>
+        <p><span class="glyphicon glyphicon-tower"></span> {{taskCtrl.cardOwner}}</p>
+    </div>
+    <div class="modal-body">
+        <p ng-class="taskCtrl.dueDate.length < 8 ? 'has-error' : ''">
+            <span class="glyphicon glyphicon-time"></span>
+            <input type="date" class="noBoarderInput" ng-model="taskCtrl.dueDate" placeholder="yyyy-MM-dd" min="2013-01-01" 
+            validatedateformat data-date-format="yyyy-mm-dd" maxlength="10" required />
+        </p>
+        
+        <tags-input ng-model="taskCtrl.assigned" display-property="displayname" add-from-autocomplete-only="true"
+            on-tag-removing="taskCtrl.removeAllowed($tag)" placeholder="User">
+            <auto-complete source="taskCtrl.getTags()"></auto-complete>
+        </tags-input>
+        <div ng-class="taskCtrl.description.length < 1 ? 'has-error' : ''">
+            <textarea class="form-control" ng-model="taskCtrl.description" translate translate-attr-placeholder="description" required></textarea>
+        </div>
+        <div hidden>
+            <p class="title">Chat</p>
+            <div class="chat">
+                <div class="message" ng-repeat="m in taskCtrl.discussion">
+                    <span class="glyphicon glyphicon-remove" ng-click="taskCtrl.deleteMessage(m.id)"></span>
+                    <p>{{m.senderName}}:<br>{{m.message}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary sendButton" ng-click="taskCtrl.sendMessage()">Senden</span></button>
+                <textarea id="chatTextArea" class="form-control" rows="1"></textarea>
+            </div>
+        </div>
+        
+        <div>
+            <p class="title">Files</p>
+            <div class="files">
+                <span class="file " ng-repeat="file in taskCtrl.files">
+                    <a ng-href="{{taskCtrl.downloadPath(file.id)}}" target="_blank">{{file.filename}}</a>
+                    <span class="glyphicon glyphicon-remove" ng-click="taskCtrl.deleteFile(file.id)"></span>
+                </span>
+                <div class="fileInput">
+                    <input id="fileInput" class="btn btn-default" type="file" id="file" name="file" ngf-select="taskCtrl.filesToUpload = $files" ng-disabled="taskCtrl.isNewTask()" multiple/>
+                    <button id="fileInputOk" class="btn btn-primary" ng-click="taskCtrl.uploadFiles()" ng-disabled="taskCtrl.isNewTask()">Upload</button>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="deleteButton" class="btn btn-danger" ng-click="taskCtrl.deleteCard()" translate="delete">Löschen</button>
+        <button type="button" class="btn btn-default" ng-click="taskCtrl.cancel()" translate="cancel">Abbrechen</button>
+        <button class="btn btn-success" ng-click="taskCtrl.saveCard()" ng-disabled="taskCtrl.cardName.length < 2" translate="save">Speichern</button>
+    </div>
+</div>

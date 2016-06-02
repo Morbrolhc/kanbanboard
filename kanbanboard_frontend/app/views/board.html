@@ -1,0 +1,136 @@
+
+<h4 id="titleBoard" class="floatLeft">
+    <input type="text" class="noBoarderInput" ng-class="board.boardName.length < 2 ? 'errorBoarder' : ''" 
+    ng-disabled="board.boardID == 'all'" ng-model="board.boardName" ng-blur="board.updateBoard()" translate translate-attr-placeholder="boardName"/>
+</h4>
+<div class="navbar-form search" role="search">
+    <!--
+    <div class="form-group">
+        <input type="text" class="form-control" ng-model="board.search" placeholder="Task Search"/>
+    </div>
+    <button class="btn btn-default" ng-click="board.searchTask()">
+        <span class="glyphicon glyphicon-search"></span>
+    </button> -->
+    
+    <div class="input-group stylish-input-group">
+        <input type="text" class="form-control" translate translate-attr-placeholder="searchTask" ng-model="board.searchText" ng-change="board.loadAllTasks()"/>
+        <span class="input-group-addon">
+            <button type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>  
+        </span>
+    </div>
+
+    <button class="btn btn-default" ng-hide="board.boardID === 'all'" translate="members" ng-click="board.editMembers = !board.editMembers;">
+        <span class="glyphicon glyphicon-user"></span>Board Members
+    </button>
+    <button class="btn btn-default" ng-disabled="board.allTaskPage === 0" ng-hide="board.boardID !== 'all'" ng-click="board.allTaskPage = board.allTaskPage - 1; board.loadAllTasks()">
+        <span class="glyphicon glyphicon-backward"></span>
+    </button>
+    <span ng-hide="board.boardID !== 'all'" >{{board.allTaskPage}}</span>
+    <button class="btn btn-default" ng-disabled="(board.allTaskPage + 1) === board.allTaskPageCount" ng-hide="board.boardID !== 'all'" ng-click="board.allTaskPage = board.allTaskPage + 1; board.loadAllTasks()">
+        <span class="glyphicon glyphicon-forward"></span>
+    </button>
+    
+    <tags-input class="selectUser" ng-hide="!board.editMembers" ng-model="board.assigned" display-property="displayname" add-from-autocomplete-only="true"
+        on-tag-removing="board.removeAllowed($tag)" on-tag-added="board.addedMember($tag)" on-tag-removed="board.removedMember($tag)" placeholder="Mitglieder hinzufügen">
+        <auto-complete source="board.getTags($query)" max-results-to-show="10"></auto-complete>
+    </tags-input>
+    
+</div>
+<div class="boardContainer">
+    <div class="boardInfo todoBorder">
+        <div class="boardName todo todoBoarder">
+            <button class="btn btn-default btn-xs floatRight" ng-disabled="board.boardID === 'all'" 
+            ng-click="board.openNewTaskModal('TODO')"><span class="glyphicon glyphicon-plus"></span></button>
+            ToDo
+        </div>
+        <ul dnd-list="board.todoDropList" class="dragDrop" dnd-drop="board.updateCardCategory(item, 'TODO')">
+            <li class="boardEntry" ng-repeat="card in board.todoDropList | filter:board.searchText | orderBy:'name'" dnd-draggable="card" dnd-effect-allowed="move" 
+            dnd-selected="board.selected = card" ng-class="{'selected': board.selected === card}" 
+            dnd-moved="board.todoDropList.splice($index, 1)">
+                <div id="deleteTask"class="btn" ng-click="board.deleteTask(card)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </div>
+                <div class="btn taskButton" ng-click="board.openTaskModal(card)">
+                    <div class="entryName">{{card.name}}</div>
+                    <div class="entryAssigned">
+                        <p class="cropTaskMemberLength" align="left">
+                            <span>
+                                <span class="glyphicon glyphicon-tower"></span>
+                                <span class="assignedName">{{card.createdby.displayname}}</span>
+                            </span>
+                            <span ng-repeat="person in card.assigned">
+                                <span ng-hide="card.createdby.username === person.username" class="glyphicon glyphicon-user"></span>
+                                <span ng-hide="card.createdby.username === person.username" class="assignedName">{{person.displayname}}</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="boardInfo doingBorder">
+        <div class="boardName doing doingBorder">
+            <button class="btn btn-default btn-xs floatRight" ng-disabled="board.boardID === 'all'" 
+            ng-click="board.openNewTaskModal('DOING')"><span class="glyphicon glyphicon-plus"></span></button>
+            Doing
+        </div>
+        <ul dnd-list="board.doingDropList" class="dragDrop" dnd-drop="board.updateCardCategory(item, 'DOING')">
+            <li class="boardEntry" ng-repeat="card in board.doingDropList | filter:board.searchText | orderBy:'name'" 
+            dnd-selected="board.selected = card"  dnd-draggable="card" dnd-effect-allowed="move" 
+            ng-class="{'selected': board.selected === card}" dnd-moved="board.doingDropList.splice($index, 1)">
+                <div id="deleteTask"class="btn" ng-click="board.deleteTask(card)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </div>
+                <div class="btn taskButton" ng-click="board.openTaskModal(card)">
+                    <div class="entryName">{{card.name}}</div>
+                    <div class="entryAssigned">
+                        <p class="cropTaskMemberLength" align="left">
+                            <span>
+                                <span class="glyphicon glyphicon-tower"></span>
+                                <span class="assignedName">{{card.createdby.displayname}}</span>
+                            </span>
+                            <span ng-repeat="person in card.assigned">
+                                <span ng-hide="card.createdby.username === person.username" class="glyphicon glyphicon-user"></span>
+                                <span ng-hide="card.createdby.username === person.username" class="assignedName">{{person.displayname}}</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="boardInfo doneBorder">
+        <div class="boardName done doneBoarder">
+            <button class="btn btn-default btn-xs floatRight" ng-disabled="board.boardID === 'all'" 
+            ng-click="board.openNewTaskModal('DONE')"><span class="glyphicon glyphicon-plus"></span></button>
+            Done
+        </div>
+        <ul dnd-list="board.doneDropList" class="dragDrop" dnd-drop="board.updateCardCategory(item, 'DONE')">
+            <li class="boardEntry" ng-repeat="card in board.doneDropList | filter:board.searchText | orderBy:'name'" 
+            dnd-selected="board.selected = card"  dnd-draggable="card" dnd-effect-allowed="move" 
+            ng-class="{'selected': board.selected === card}" dnd-moved="board.doneDropList.splice($index, 1)">
+                <div id="deleteTask"class="btn" ng-click="board.deleteTask(card)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </div>
+                <div class="btn taskButton" ng-click="board.openTaskModal(card)">
+                    <div class="entryName">{{card.name}}</div>
+                    <div class="entryAssigned">
+                        <p class="cropTaskMemberLength" align="left">
+                            <span>
+                                <span class="glyphicon glyphicon-tower"></span>
+                                <span class="assignedName">{{card.createdby.displayname}}</span>
+                            </span>
+                            <span ng-repeat="person in card.assigned">
+                                <span ng-hide="card.createdby.username === person.username" class="glyphicon glyphicon-user"></span>
+                                <span ng-hide="card.createdby.username === person.username" class="assignedName">{{person.displayname}}</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

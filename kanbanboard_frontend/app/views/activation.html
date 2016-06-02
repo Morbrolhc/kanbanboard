@@ -1,0 +1,11 @@
+<h3 translate="activation">Activation</h3>
+
+<p translate="username"><span>{{activate.username}}</span></p>
+
+<h4 ng-show="activate.activated" translate="activardText">User is activated you will be forwarded to the login page soon</h4>
+<h4 ng-hide="activate.activated" translate="activationErrorText">User could not be activated</h4>
+
+<div ng-hide="activate.error.length === 0">
+    <label class="control-label" translate="error">Error</label>
+    <textarea readonly ng-model="activate.error"></textarea>
+</div>

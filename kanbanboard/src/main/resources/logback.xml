@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>log/kanban-server.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <FileNamePattern>kanban-server.%d{yyyy-MM-dd}.log</FileNamePattern>
+
+            <!-- keep 365 days worth of history -->
+            <maxHistory>365</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="ch.fhnw.imvs.kanban" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="consoleAppender" />
+    </logger>
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="consoleAppender" />
+    </root>
+</configuration>

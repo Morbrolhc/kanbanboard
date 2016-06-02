@@ -1,0 +1,17 @@
+#parse("msg.vm")
+<html>
+<body>
+<h3>#msg("mail.hello") ${user.getDisplayname()},</h3>
+<p>
+    #msg("mail.register")
+</p>
+<p>
+    ${url}
+</p>
+
+<p>
+    #msg("mail.greeting")
+</p>
+</body>
+
+</html>

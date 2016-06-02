@@ -1,0 +1,109 @@
+<div class="form-horizontal">
+    <form id="login" ng-hide="login.registerActive || login.resetActive" name="loginForm">
+        <h3>Login</h3>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" translate="username">Username</label>
+            <div class="col-sm-10" ng-class="login.username.length < 2 ? 'has-error' : ''">
+                <input type="text" class="form-control" ng-model="login.username" translate translate-attr-placeholder="emailOrUsername" autofocus required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" translate="password">Password</label>
+            <div class="col-sm-10" ng-class="login.password.length < 4 ? 'has-error' : ''">
+                <input type="password" class="form-control" ng-model="login.password" pattern=".{4,}" translate translate-attr-placeholder="password" required/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-success" type="submit" ng-click="login.login()" ng-disabled="login.username.length < 2 || !loginForm.$valid">Login</button>
+                <button class="btn btn-primary" ng-click="login.registerActive = true" translate="register">Register</button>
+                <button class="btn btn-warning" ng-click="login.resetActive = true" translate="resetPassword">Reset Password</button>
+            </div>
+        </div>
+    </form>
+    
+    <form id="register" name="registerForm" ng-hide="!login.registerActive">
+        <h3>Register</h3>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" translate="username">Username</label>
+            <div class="col-sm-10" ng-class="login.username.length < 2 ? 'has-error' : ''">
+                <input type="text"  class="form-control" ng-model="login.username" pattern="^[a-zA-Z0-9]+$" translate translate-attr-placeholder="username" autofocus required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-10" ng-class="login.email.length < 3 ? 'has-error' : ''">
+                <input type="email" class="form-control" ng-model="login.email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required/>
+            </div>
+        </div> 
+        <div class="form-group">
+            <label class="col-sm-2 control-label" translate="displayName">Display Name</label>
+            <div class="col-sm-10" ng-class="login.displayName.length < 2 ? 'has-error' : ''">
+                <input type="text" class="form-control" ng-model="login.displayName" translate translate-attr-placeholder="displayName" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" translate="language">Language</label>
+            <div class="col-sm-10">
+                <select class="form-control" ng-model="login.language" ng-selected="login.changeLanguage()">
+                    <option value="EN">English</option>
+                    <option value="DE">German</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" ng-class="login.password.length < 2 ? 'has-error' : ''" translate="password">Password</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" ng-model="login.password" pattern=".{4,}" translate translate-attr-placeholder="password" required/>
+            </div>
+        </div>
+        <div class="form-group" ng-class="login.password !== login.password2 ? 'has-error' : '' ">
+            <label class="col-sm-2 control-label" translate="passwordrepeat">Repeat Password</label>
+            <div class="col-sm-10" ng-class="login.password2.length < 2 ? 'has-error' : ''">
+                <input type="password" autocomplete="off" class="form-control" ng-model="login.password2" pattern=".{4,}" translate translate-attr-placeholder="passwordrepeat" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-primary" type="submit" 
+                    ng-disabled="login.password !== login.password2 || login.password.length < 2 || login.displayName.length < 2 || !registerForm.$valid || login.username.length < 2" 
+                    ng-click="login.register()" translate="register">Register</button>
+                <button class="btn btn-default" ng-click="login.registerActive = false" translate="cancel">Cancel</button>
+            </div>
+        </div>
+    </form>
+    
+    <form id="resetPW" name="resetForm" ng-hide="!login.resetActive">
+        <h3>Reset Password</h3>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">email</label>
+            <div class="col-sm-10" ng-class="login.email.length < 2 ? 'has-error' : ''">
+                <input type="email"  class="form-control" ng-model="login.email" placeholder="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autofocus required/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-warning" ng-click="login.resetPW()" ng-disabled="!resetForm.$valid"  type="submit" method="submit" translate="resetPassword">Reset Password</button>
+                <button class="btn btn-default" ng-click="login.resetActive = false" translate="cancel">Cancel</button>
+            </div>
+        </div>
+    </form>
+    
+    <div ng-hide="login.error.length === 0">
+        <label class="control-label" translate="message">Message</label>
+        <textarea readonly ng-model="login.error"></textarea>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+

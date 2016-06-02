@@ -1,0 +1,58 @@
+<form class="form-horizontal" name="updateForm">
+    <div class="form-group">
+        <label class="col-sm-2 control-label" translate="username">Username</label>
+        <div class="col-sm-10">
+            <p class="form-control" disabled>{{userCtrl.user.sub}}</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+            <p class="form-control" disabled>{{userCtrl.email}}</p>
+        </div>
+    </div> 
+    <div class="form-group">
+        <label class="col-sm-2 control-label" translate="displayName">Display Name</label>
+        <div class="col-sm-10" ng-class="userCtrl.displayName.length < 1 ? 'has-error' : ''">
+            <input type="text" class="form-control" ng-model="userCtrl.displayName" pattern=".{1,}" translate translate-attr-placeholder="displayName" required/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" translate="language">Language</label>
+        <div class="col-sm-10">
+            <select class="form-control" ng-model="userCtrl.language" ng-selected="userCtrl.changeLanguage()">
+                <option value="EN">English</option>
+                <option value="DE">German</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" translate="oldPassword">Old-Password</label>
+        <div class="col-sm-10" ng-class="userCtrl.oldPassword.length < 1 ? 'has-error' : ''">
+            <input type="password" autocomplete="off" class="form-control" ng-model="userCtrl.oldPassword" pattern=".{1,}" translate translate-attr-placeholder="oldPassword" required/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" translate="newPassword">New-Password</label>
+        <div class="col-sm-10">
+            <input type="password" autocomplete="off" class="form-control" ng-model="userCtrl.newPassword1" translate translate-attr-placeholder="newPassword"/>
+        </div>
+    </div>
+    <div class="form-group" ng-class="userCtrl.newPassword1 !== userCtrl.newPassword2 ? 'has-error' : ''">
+        <label class="col-sm-2 control-label" translate="passwordrepeat">Repeat Password</label>
+        <div class="col-sm-10">
+            <input type="password" autocomplete="off" class="form-control" ng-model="userCtrl.newPassword2" translate translate-attr-placeholder="passwordrepeat"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="userControl">
+                <button type="button" class="btn btn-default" ng-click="userCtrl.cancel()" translate="cancel">Abbrechen</button>
+                <button class="btn btn-success" ng-click="userCtrl.updateData()" 
+                    ng-disabled="userCtrl.newPassword1 !== userCtrl.newPassword2 || userCtrl.oldPassword.length < 1 || userCtrl.displayName.length < 1 || !updateForm.$valid" translate="save">Speichern</button>
+            </div>
+            <button disabled class="btn btn-danger" ng-click="userCtrl.deleteAccount()" translate="deleteAccount">Account löschen</button>
+        </div>
+    </div>
+</form>

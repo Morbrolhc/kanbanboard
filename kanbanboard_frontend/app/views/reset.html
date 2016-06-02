@@ -1,0 +1,32 @@
+    <h3 translate="resetPassword">Reset Password</h3>
+    
+    <form ng-hide="reset.tokenExpired">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" translate="password">Password</label>
+            <div class="col-sm-10" ng-class="reset.password1.length < 2 ? 'has-error' : ''">
+                <input type="password" class="form-control" ng-model="reset.password1" translate translate-attr-placeholder="password" required>
+            </div>
+        </div>
+        <br/>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" translate="passwordrepeat">Repeat Password</label>
+            <div class="col-sm-10" ng-class="reset.password2.length < 2 || reset.password1 !== reset.password2 ? 'has-error' : ''">
+                <input type="password" class="form-control" ng-model="reset.password2" ng-pattern="reset.password1" translate translate-attr-placeholder="passwordrepeat" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button ng-disabled="reset.password1 !== reset.password2" class="btn btn-warning" ng-click="reset.resetPassword()" translate="resetPassword">Reset Password</button>
+            </div>
+        </div>
+        
+        <div ng-hide="reset.message.length === 0">
+            <label class="control-label" translate="error">Error</label>
+            <textarea readonly ng-model="reset.message"></textarea>
+        </div>
+    </form>
+    
+    <div ng-show="reset.tokenExpired">
+        <h3 translate="resetTokenExpired">Can not reset account. Try resetting account again</h3>
+    </div>

@@ -1,0 +1,18 @@
+#parse("msg.vm")
+<html>
+<body>
+<h3>#msg("mail.hello") ${user.getDisplayname()},</h3>
+<p>
+    #msg("mail.reminder")
+</p>
+
+<p>
+    ${tasktext}
+</p>
+
+<p>
+    #msg("mail.greeting")
+</p>
+</body>
+
+</html>
